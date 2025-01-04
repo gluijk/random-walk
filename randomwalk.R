@@ -125,7 +125,7 @@ for (f in 0:(NFRAMES-1)) {
 
 
 # Animation
-# 24 fps, 220.325 s, 5287.8	frames -> 5288 total frames
+# 24 fps, 220.325 s, 5287.8 frames -> 5288 total frames
 
 # MP4 Video (MPEG-4 AVC/H.264):
 # ffmpeg -loop 1 -framerate 24 -i randomwalk%04d.png -i popcorn.wav
