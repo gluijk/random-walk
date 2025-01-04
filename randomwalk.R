@@ -2,7 +2,6 @@
 # www.overfitting.net
 # https://www.overfitting.net/
 
-
 # In mathematics, a random walk is a stochastic process that describes
 # a path that consists of a succession of random steps on some mathematical
 # space. When this motion is continuous, i.e. when all locations in the space
@@ -12,13 +11,6 @@
 # position inside a fluid sub-domain, followed by a relocation to another
 # sub-domain.
 
-# I have simulated a 2D continuous random walk using a normal distribution to
-# iterate the theoretical position of a particle. A total of 10 million steps
-# or position changes were calculated, visualizing the probability density of
-# the particle passing by any given position. The code is very fast thanks to
-# R vectorization. No specific libraries were used, the animation frames were
-# created straight from the calculated random walk matrix and coloured as an
-# array.
 
 library(png)
 
@@ -129,5 +121,9 @@ for (f in 0:(NFRAMES-1)) {
 # 24 fps, 220.325 s, 5287.8 frames -> 5288 total frames
 
 # MP4 Video (MPEG-4 AVC/H.264):
+
 # ffmpeg -loop 1 -framerate 24 -i randomwalk%04d.png -i popcorn.wav
 # -t 220.325 -c:v libx264 -crf 20 -pix_fmt yuv420p randomwalknorm.mp4
+
+# ffmpeg -loop 1 -framerate 24 -i randomwalk%04d.png -i popcorn.wav
+# -t 220.325 -c:v libx264 -crf 20 -pix_fmt yuv420p randomwalkunif.mp4
