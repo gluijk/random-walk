@@ -35,8 +35,8 @@ NSTEPS=10000000  # number of steps of random walk (excl. starting position)
 
 # Calculate Random walk XY coords
 set.seed(100)  # reproducible results
-# walk=matrix(runif(2*(NSTEPS+1))-0.5, ncol=2)  # uniform distribution
 walk=matrix(rnorm(2*(NSTEPS+1)), ncol=2)  # normal distribution
+#walk=matrix(runif(2*(NSTEPS+1))-0.5, ncol=2)  # uniform distribution
 walk[1,]=c(0,0)  # starting from (0,0)
 walk=apply(walk, 2, cumsum)  # accumulate steps per column
 # (Did I ever tell you I love the cumsum() function?)
@@ -95,7 +95,8 @@ abline(h=y0, v=x0, col='red')
 
 
 # Generate frames
-imgbgd=readPNG("randomwalkbgd.png")
+imgbgd=readPNG("randomwalkbgdnorm.png")
+#imgbgd=readPNG("randomwalkbgdunif.png")
 img=matrix(0, nrow=DIMY, ncol=DIMX)
 INC=floor(NSTEPS/NFRAMES)
 INI=1
@@ -129,4 +130,4 @@ for (f in 0:(NFRAMES-1)) {
 
 # MP4 Video (MPEG-4 AVC/H.264):
 # ffmpeg -loop 1 -framerate 24 -i randomwalk%04d.png -i popcorn.wav
-# -t 220.325 -c:v libx264 -crf 20 -pix_fmt yuv420p randomwalk.mp4
+# -t 220.325 -c:v libx264 -crf 20 -pix_fmt yuv420p randomwalknorm.mp4
