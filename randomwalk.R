@@ -39,9 +39,12 @@ set.seed(100)  # reproducible results
 walk=matrix(rnorm(2*(NSTEPS+1)), ncol=2)  # normal distribution
 walk[1,]=c(0,0)  # starting from (0,0)
 walk=apply(walk, 2, cumsum)  # accumulate steps per column
+# (Did I ever tell you I love the cumsum() function?)
 
 
 # Fit random walk to output dimensions and round coords
+
+# Check for aspect ratio
 DIMXwalk=max(walk[,1])-min(walk[,1])
 DIMYwalk=max(walk[,2])-min(walk[,2])
 if (DIMYwalk>DIMXwalk) {
@@ -54,9 +57,10 @@ if (DIMYwalk>DIMXwalk) {
 plot(walk, type='l', asp=1)
 abline(h=0, v=0, col='red')
 
+# Round position values to output matrix range
 walkint=walk*0
 if (DIMXwalk/DIMYwalk > DIMX/DIMY) {
-    # Random walk is more panoramic than display
+    # Random walk is more panoramic than output
     # 1. Fit X dimensions to 1..DIMX -> fscale
     # 2. Centre Y dimensions applying same fscale
     MINIMO=min(walk[,1])
@@ -70,7 +74,7 @@ if (DIMXwalk/DIMYwalk > DIMX/DIMY) {
     x0=round(fscale*(0-MINIMO)+1)
     y0=round(fscale*(0-MEDIO)+DIMY/2)
 } else {
-    # Random walk is less panoramic than display
+    # Random walk is less panoramic than output
     # 1. Fit Y dimensions to 1..DIMY -> fscale
     # 2. Centre X dimensions applying same fscale
     MINIMO=min(walk[,2])
@@ -99,7 +103,7 @@ for (f in 0:(NFRAMES-1)) {
     FIN=INI+INC-1
     for (i in INI:FIN)  # very fast loop
         img[walkint[i,2], walkint[i,1]]=img[walkint[i,2], walkint[i,1]]+1
-    y1=walkint[FIN,2]  #last position reached
+    y1=walkint[FIN,2]  # last position reached
     x1=walkint[FIN,1]
     INI=INI+INC
     
@@ -113,9 +117,8 @@ for (f in 0:(NFRAMES-1)) {
     imgout[imgout>1]=1  # clip sat values
 
     # Save frame
-    name=paste0("randomwalk",
-                ifelse(f<10, "000", ifelse(f<100, "00", ifelse(f<1000, "0", ""))),
-                f, ".png")
+    name=paste0("randomwalk", ifelse(f<10, "000", ifelse(f<100, "00",
+                              ifelse(f<1000, "0", ""))), f, ".png")
     print(paste0(f+1, "/", NFRAMES, ": Writing '", name, "'..."))
     writePNG(imgout, name)
 }
