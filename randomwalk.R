@@ -1,6 +1,6 @@
 # Brownian random walk simulation
 # www.overfitting.net
-# https://www.overfitting.net/
+# https://www.overfitting.net/2025/01/random-walk-browniano-con-r.html
 
 # In mathematics, a random walk is a stochastic process that describes
 # a path that consists of a succession of random steps on some mathematical
