@@ -89,7 +89,7 @@ abline(h=y0, v=x0, col='red')
 # Build animation
 imgbgd=readPNG("randomwalkbgdnorm.png")
 #imgbgd=readPNG("randomwalkbgdunif.png")
-INC=floor(NSTEPS/NFRAMES)
+INC=floor(NSTEPS/NFRAMES)  # INC*NFRAMES <= NSTEPS some steps may be dropped
 
 # Precalculate absolute max density to normalize entire animation
 img=matrix(0, nrow=DIMY, ncol=DIMX)
