@@ -86,11 +86,19 @@ plot(walkint, type='l', asp=1)
 abline(h=y0, v=x0, col='red')
 
 
-# Generate frames
+# Build animation
 imgbgd=readPNG("randomwalkbgdnorm.png")
 #imgbgd=readPNG("randomwalkbgdunif.png")
-img=matrix(0, nrow=DIMY, ncol=DIMX)
 INC=floor(NSTEPS/NFRAMES)
+
+# Precalculate absolute max density to normalize entire animation
+img=matrix(0, nrow=DIMY, ncol=DIMX)
+for (i in 1:(INC*NFRAMES))  # very fast loop
+    img[walkint[i,2], walkint[i,1]]=img[walkint[i,2], walkint[i,1]]+1
+MAXDENSITY=max(img)
+
+# Generate frames    
+img=img*0
 INI=1
 for (f in 0:(NFRAMES-1)) {
     FIN=INI+INC-1
@@ -100,9 +108,9 @@ for (f in 0:(NFRAMES-1)) {
     x1=walkint[FIN,1]
     INI=INI+INC
     
-    imgout=(img/max(img))^(1/Gamma)  # normalize output grayscale
-    imgout[y1,]=1-imgout[y1,]  # draw current walk position
-    imgout[,x1]=1-imgout[,x1]    
+    imgout=(img/MAXDENSITY)^(1/Gamma)  # normalize output grayscale
+    imgout[y1,]=(1-imgout[y1,])*0.5  # draw current walk position
+    imgout[,x1]=(1-imgout[,x1])*0.5    
     imgout=imgout[nrow(imgout):1,]  # flip rows
     imgout=replicate(3, imgout)  # add colour
     imgout[,,1:2]=(sin(pi*(imgout[,,1:2]-1)+pi/2)+1)/2  # add R and G contrast
@@ -117,13 +125,12 @@ for (f in 0:(NFRAMES-1)) {
 }
 
 
-# Animation
+# FFmpeg commands:
 # 24 fps, 220.325 s, 5287.8 frames -> 5288 total frames
-
 # MP4 Video (MPEG-4 AVC/H.264):
 
 # ffmpeg -loop 1 -framerate 24 -i randomwalk%04d.png -i popcorn.wav
-# -t 220.325 -c:v libx264 -crf 20 -pix_fmt yuv420p randomwalknorm.mp4
+# -t 220.325 -c:v libx264 -crf 23 -pix_fmt yuv420p randomwalknorm.mp4
 
 # ffmpeg -loop 1 -framerate 24 -i randomwalk%04d.png -i popcorn.wav
-# -t 220.325 -c:v libx264 -crf 20 -pix_fmt yuv420p randomwalkunif.mp4
+# -t 220.325 -c:v libx264 -crf 23 -pix_fmt yuv420p randomwalkunif.mp4
