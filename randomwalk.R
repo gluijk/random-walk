@@ -35,7 +35,7 @@ walk=apply(walk, 2, cumsum)  # accumulate steps per column
 
 # Fit random walk to output dimensions and round coords
 
-# Check for aspect ratio
+# Maximize output size
 DIMXwalk=max(walk[,1])-min(walk[,1])
 DIMYwalk=max(walk[,2])-min(walk[,2])
 if ((DIMYwalk>DIMXwalk & DIMY<DIMX) | (DIMYwalk<DIMXwalk & DIMY>DIMX)) {
