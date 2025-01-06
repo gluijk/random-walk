@@ -11,7 +11,6 @@
 # position inside a fluid sub-domain, followed by a relocation to another
 # sub-domain.
 
-
 library(png)
 
 
@@ -134,3 +133,36 @@ for (f in 0:(NFRAMES-1)) {
 
 # ffmpeg -loop 1 -framerate 24 -i randomwalk%04d.png -i popcorn.wav
 # -t 220.325 -c:v libx264 -crf 23 -pix_fmt yuv420p randomwalkunif.mp4
+
+
+
+##############################################
+# High resolution 1000 million steps random walk
+
+library(tiff)
+
+
+# Simulation parameters
+Gamma=2.2  # gamma lift
+NSTEPS=1000000000  # number of steps of random walk (excl. starting position)
+
+# Calculate Random walk XY coords
+set.seed(100)  # reproducible results
+walk=matrix(rnorm(2*(NSTEPS+1)), ncol=2)  # normal distribution
+walk[1,]=c(0,0)  # starting from (0,0)
+walk=apply(walk, 2, cumsum)  # accumulate steps per column
+
+walk[,1]=walk[,1]-min(walk[,1])
+walk[,2]=walk[,2]-min(walk[,2])
+walk=round(walk*0.2)+1  # max(walk)=70360.42
+DIMX=max(walk[,1])
+DIMY=max(walk[,2])
+
+# Build matrix (192Mpx)
+img=matrix(0, nrow=DIMY, ncol=DIMX)
+for (i in 1:nrow(walk))  # very fast loop
+    img[walk[i,2], walk[i,1]]=img[walk[i,2], walk[i,1]]+1
+img=img/max(img)
+
+writeTIFF(img, "ramdonwalk_1000million_g1.0.tif", bits.per.sample=16)
+writeTIFF(img^(1/Gamma), "ramdonwalk_1000million_g2.2.tif", bits.per.sample=16)
