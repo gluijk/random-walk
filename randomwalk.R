@@ -38,8 +38,8 @@ walk=apply(walk, 2, cumsum)  # accumulate steps per column
 # Check for aspect ratio
 DIMXwalk=max(walk[,1])-min(walk[,1])
 DIMYwalk=max(walk[,2])-min(walk[,2])
-if (DIMYwalk>DIMXwalk) {
-    print("X and Y coords were switched")
+if ((DIMYwalk>DIMXwalk & DIMY<DIMX) | (DIMYwalk<DIMXwalk & DIMY>DIMX)) {
+    print("X and Y coords switched")
     walk=walk[,2:1]  # switch X and Y
     DIMXwalk=DIMYwalk
     DIMYwalk=max(walk[,2])-min(walk[,2])    
