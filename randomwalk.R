@@ -51,9 +51,9 @@ abline(h=0, v=0, col='red')
 # Round position values to output matrix range
 walkint=walk*0
 if (DIMXwalk/DIMYwalk > DIMX/DIMY) {
-    # Random walk is more panoramic than output
-    # 1. Fit X dimensions to 1..DIMX -> fscale
-    # 2. Centre Y dimensions applying same fscale
+    print("Random walk is more panoramic than output")
+    # 1. Fit X dimensions to 1..DIMX -> scaling factor (fscale)
+    # 2. Centre Y dimensions applying same scaling factor (fscale)
     MINIMO=min(walk[,1])
     MAXIMO=max(walk[,1])
     MEDIO=(max(walk[,2])+min(walk[,2]))/2
@@ -65,9 +65,9 @@ if (DIMXwalk/DIMYwalk > DIMX/DIMY) {
     x0=round(fscale*(0-MINIMO)+1)
     y0=round(fscale*(0-MEDIO)+DIMY/2)
 } else {
-    # Random walk is less panoramic than output
-    # 1. Fit Y dimensions to 1..DIMY -> fscale
-    # 2. Centre X dimensions applying same fscale
+    print("Random walk is less panoramic than output")
+    # 1. Fit Y dimensions to 1..DIMY -> scaling factor (fscale)
+    # 2. Centre X dimensions applying same scaling factor (fscale)
     MINIMO=min(walk[,2])
     MAXIMO=max(walk[,2])
     MEDIO=(max(walk[,1])+min(walk[,1]))/2
